@@ -16,7 +16,7 @@ namespace BoardViewer
 
         public MainWindow()
         {
-            currentBoard = new FauxGameOfLife();
+            currentBoard = new GameOfLife(25, new string[] { "5,10", "6,10", "7,9", "7,11", "8,10", "9,10", "10,10", "11,10", "12,9", "12,11", "13,10", "14,10" });
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();

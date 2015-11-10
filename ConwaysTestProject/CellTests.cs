@@ -22,12 +22,10 @@ namespace ConwaysTestProject
         }
 
         [TestMethod]
-        public void CellCanChangeState()
+        public void CellTellsItsLivingNeighbors()
         {
             Cell cell = new Cell();
-            Assert.IsFalse(cell.Living);
-            cell.switchState();
-            Assert.IsTrue(cell.Living);
+            Assert.AreEqual(0, cell.LiveNeighbors);
         }
     }
 }

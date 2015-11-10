@@ -9,15 +9,14 @@
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <DataTemplate x:Key="CellTemplate">
-            <Border BorderThickness="2" BorderBrush="DarkGray" CornerRadius="2" Width="20" Height="20" >
-                <Rectangle Width="16">
+            <Border BorderThickness="1" BorderBrush="Black" Width="10" Height="10" >
+                <Rectangle Width="8">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
-                            <Setter Property="Fill" Value="LightGreen" />
+                            <Setter Property="Fill" Value="Aquamarine" />
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding}"
-                             Value="False">
-                                    <Setter Property="Fill" Value="Pink" />
+                                <DataTrigger Binding="{Binding}" Value="False">
+                                    <Setter Property="Fill" Value="DarkGray" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

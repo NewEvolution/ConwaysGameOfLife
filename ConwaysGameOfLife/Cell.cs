@@ -9,14 +9,18 @@ namespace ConwaysGameOfLife
     public class Cell
     {
         public bool Living { get; set; }
+        public int LiveNeighbors { get; set; }
+
         public Cell()
         {
             Living = false;
+            LiveNeighbors = 0;
         }
 
-        public void switchState()
+        public Cell(bool living)
         {
-            Living = !Living;
+            Living = living;
+            LiveNeighbors = 0;
         }
     }
 }
