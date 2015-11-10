@@ -30,9 +30,22 @@ namespace BoardViewer
             //List<int> cell4 = new List<int> { 4, 7 }; //                 \
             //List<int> cell5 = new List<int> { 3, 6 }; //                  \
             //List<List<int>> liveCells = new List<List<int>> { cell1, cell2, cell3, cell4, cell5 };
-            List<List<int>> liveCells = new List<List<int>> { }; // empty grid
+            List<int> cell1 = new List<int> { 5, 10 }; // Pentadecathalon
+            List<int> cell2 = new List<int> { 6, 10 };
+            List<int> cell3 = new List<int> { 7, 9 };
+            List<int> cell4 = new List<int> { 7, 11 };
+            List<int> cell5 = new List<int> { 8, 10 };
+            List<int> cell6 = new List<int> { 9, 10 };
+            List<int> cell7 = new List<int> { 10, 10 };
+            List<int> cell8 = new List<int> { 11, 10 };
+            List<int> cell9 = new List<int> { 12, 9 };
+            List<int> cell10 = new List<int> { 12, 11 };
+            List<int> cell11 = new List<int> { 13, 10 };
+            List<int> cell12 = new List<int> { 14, 10 };
+            List<List<int>> liveCells = new List<List<int>> { cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9, cell10, cell11, cell12 };
+            //List<List<int>> liveCells = new List<List<int>> { }; // empty grid
             currentBoard = new GameOfLife(25, false, liveCells);
-            currentBoard.randomFill();
+            //currentBoard.randomFill();
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();
