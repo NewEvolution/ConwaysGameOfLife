@@ -103,6 +103,11 @@ namespace ConwaysGameOfLife
             return cells;
         }
 
+        public void randomFill()
+        {
+
+        }
+
         public void Tick()
         {
             if(index >= phrase.Length)

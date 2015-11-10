@@ -9,6 +9,7 @@ namespace ConwaysGameOfLife
     public interface Board
     {
         List<List<bool>> ToList();
+        void randomFill();
         void Tick();
     }
 }

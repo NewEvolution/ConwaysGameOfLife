@@ -3,6 +3,7 @@ using ConwaysGameOfLife;
 using System.Windows.Threading;
 using System;
 using Xceed.Wpf.Toolkit;
+using System.Collections.Generic;
 
 namespace BoardViewer
 {
@@ -16,7 +17,22 @@ namespace BoardViewer
 
         public MainWindow()
         {
-            currentBoard = new FauxGameOfLife();
+            //List<int> cell1 = new List<int> { 5, 5 }; //-------Beacon-.
+            //List<int> cell2 = new List<int> { 5, 6 }; //               \
+            //List<int> cell3 = new List<int> { 6, 5 }; //                \
+            //List<int> cell4 = new List<int> { 7, 8 }; //                 \
+            //List<int> cell5 = new List<int> { 8, 7 }; //                  \
+            //List<int> cell6 = new List<int> { 8, 8 }; //                   \
+            //List<List<int>> liveCells = new List<List<int>> { cell1, cell2, cell3, cell4, cell5, cell6 };
+            //List<int> cell1 = new List<int> { 5, 5 }; //------Glider--.
+            //List<int> cell2 = new List<int> { 5, 6 }; //               \
+            //List<int> cell3 = new List<int> { 5, 7 }; //                \
+            //List<int> cell4 = new List<int> { 4, 7 }; //                 \
+            //List<int> cell5 = new List<int> { 3, 6 }; //                  \
+            //List<List<int>> liveCells = new List<List<int>> { cell1, cell2, cell3, cell4, cell5 };
+            List<List<int>> liveCells = new List<List<int>> { }; // empty grid
+            currentBoard = new GameOfLife(25, false, liveCells);
+            currentBoard.randomFill();
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();
