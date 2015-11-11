@@ -14,7 +14,6 @@ namespace ConwaysGameOfLife
         public Cell(bool living)
         {
             Living = living;
-            LiveNeighbors = 0;
         }
     }
 }
