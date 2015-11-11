@@ -8,23 +8,30 @@ namespace ConwaysTestProject
     public class ConwaysTests
     {
         [TestMethod]
-        public void GameConstructorMakesGameInstance()
+        public void GameConstructor()
         {
-            GameOfLife game = new GameOfLife(25, false);
+            GameOfLife game = new GameOfLife(25);
             Assert.IsNotNull(game);
         }
 
         [TestMethod]
-        public void GameConstructorOverload()
+        public void GameConstructorWithCellArray()
         {
             GameOfLife game = new GameOfLife(25, new string[] { "0,0", "1,0" });
             Assert.IsNotNull(game);
         }
 
         [TestMethod]
-        public void InitializedGameBoardIsFullOfDeadCells()
+        public void GameConstructorWithPattern()
         {
-            GameOfLife game = new GameOfLife(25, false);
+            GameOfLife game = new GameOfLife(25, "none");
+            Assert.IsNotNull(game);
+        }
+
+        [TestMethod]
+        public void InitializedPatternlessGameBoardIsFullOfDeadCells()
+        {
+            GameOfLife game = new GameOfLife(25, "none");
             bool actualCellValue = game.ToList()[5][4];
             Assert.IsFalse(actualCellValue);
         }
@@ -54,6 +61,17 @@ namespace ConwaysTestProject
             Assert.IsFalse(game.ToList()[0][1]);
             game.Tick();
             Assert.IsTrue(game.ToList()[0][1]);
+        }
+
+        [TestMethod]
+        public void BlockStillLifeAllCellsLive()
+        {
+            GameOfLife game = new GameOfLife(25, new string[] { "0,0", "0,1", "1,0", "1,1" });
+            game.Tick();
+            Assert.IsTrue(game.ToList()[0][0]);
+            Assert.IsTrue(game.ToList()[0][1]);
+            Assert.IsTrue(game.ToList()[1][0]);
+            Assert.IsTrue(game.ToList()[1][1]);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ConwaysGameOfLife
         private int boardSize;
         private Cell[,] gameBoard;
 
-        public GameOfLife(int size, bool random)
+        public GameOfLife(int size)
         {
             Random rand = new Random();
             boardSize = size;
@@ -21,7 +21,7 @@ namespace ConwaysGameOfLife
                 for (int x = 0; x < size; x++)
                 {
                     double check = rand.NextDouble();
-                    gameBoard[y, x] = new Cell(check >= 0.5 && random);
+                    gameBoard[y, x] = new Cell(check >= 0.5);
                 }
             }
         }
