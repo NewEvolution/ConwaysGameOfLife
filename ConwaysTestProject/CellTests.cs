@@ -10,21 +10,21 @@ namespace ConwaysTestProject
         [TestMethod]
         public void CellConstructorMakesCellInstance()
         {
-            Cell cell = new Cell();
+            Cell cell = new Cell(false);
             Assert.IsNotNull(cell);
         }
 
         [TestMethod]
         public void CellTellsItsState()
         {
-            Cell cell = new Cell();
+            Cell cell = new Cell(false);
             Assert.IsFalse(cell.Living);
         }
 
         [TestMethod]
         public void CellTellsItsLivingNeighbors()
         {
-            Cell cell = new Cell();
+            Cell cell = new Cell(false);
             Assert.AreEqual(0, cell.LiveNeighbors);
         }
     }

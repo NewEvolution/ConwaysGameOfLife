@@ -21,19 +21,23 @@ namespace ConwaysGameOfLife
                 for (int x = 0; x < size; x++)
                 {
                     double check = rand.NextDouble();
-                    if (check >= 0.5 && random)
-                    {
-                        gameBoard[y, x] = new Cell(true);
-                    }
-                    else
-                    {
-                        gameBoard[y, x] = new Cell();
-                    }
+                    gameBoard[y, x] = new Cell(check >= 0.5 && random);
                 }
             }
         }
 
         public GameOfLife(int size, string[] liveCells)
+        {
+            BoardSetup(size, liveCells);
+        }
+
+        public GameOfLife(int size, string design)
+        {
+            string[] liveCells = Pattern(design);
+            BoardSetup(size, liveCells);
+        }
+
+        private void BoardSetup(int size, string[] liveCells)
         {
             boardSize = size;
             gameBoard = new Cell[size, size];
@@ -42,27 +46,36 @@ namespace ConwaysGameOfLife
                 for (int x = 0; x < size; x++)
                 {
                     string index = y.ToString() + "," + x.ToString();
-                    if (liveCells.Contains(index))
-                    {
-                        gameBoard[y, x] = new Cell(true);
-                    }
-                    else
-                    {
-                        gameBoard[y, x] = new Cell();
-                    }
+                    gameBoard[y, x] = new Cell(liveCells.Contains(index));
                 }
             }
         }
 
-        public void Tick()
+        public string[] Pattern(string design)
         {
-            check();
-            update();
+            string check = design.ToLower();
+            if (check == "pentadecathlon")
+            {
+                return new string[]
+                {
+                    "5,10", "6,10", "7,9", "7,11",
+                    "8,10", "9,10", "10,10", "11,10",
+                    "12,9", "12,11", "13,10", "14,10"
+                };
+            }
+            if (check == "glider")
+            {
+                return new string[]
+                {
+                    "0,1", "1,2", "2,0", "2,1", "2,2"
+                };
+            }
+            return new string[] { };
         }
 
         public List<List<bool>> ToList()
         {
-            List<List<bool>> table = new List<List<bool>> { };
+            List<List<bool>> cellList = new List<List<bool>> { };
             for (int y = 0; y < boardSize; y++)
             {
                 List<bool> row = new List<bool> { };
@@ -70,22 +83,12 @@ namespace ConwaysGameOfLife
                 {
                     row.Add(gameBoard[y, x].Living);
                 }
-                table.Add(row);
+                cellList.Add(row);
             }
-            return table;
+            return cellList;
         }
 
-        public Cell cellAt(int y, int x)
-        {
-            return gameBoard[y, x];
-        }
-
-        public void switchState(int y, int x)
-        {
-            gameBoard[y, x].Living = !gameBoard[y, x].Living;
-        }
-
-        public void check()
+        public void Tick()
         {
             for (int y = 0; y < boardSize; y++)
             {
@@ -97,6 +100,7 @@ namespace ConwaysGameOfLife
                     }
                 }
             }
+            update();
         }
 
         public void update()
@@ -108,11 +112,11 @@ namespace ConwaysGameOfLife
                     Cell testCell = gameBoard[y, x];
                     if (testCell.Living)
                     {
-                        if (testCell.LiveNeighbors < 2 || testCell.LiveNeighbors > 3) switchState(y, x);
+                        if (testCell.LiveNeighbors < 2 || testCell.LiveNeighbors > 3) testCell.Living = false;
                     }
                     else
                     {
-                        if (testCell.LiveNeighbors == 3) switchState(y, x);
+                        if (testCell.LiveNeighbors == 3) testCell.Living = true;
                     }
                     testCell.LiveNeighbors = 0;
                 }
