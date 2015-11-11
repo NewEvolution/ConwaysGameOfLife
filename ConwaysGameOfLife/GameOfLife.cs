@@ -8,17 +8,18 @@ namespace ConwaysGameOfLife
 {
     public class GameOfLife : Board
     {
-        private int boardSize;
         private Cell[,] gameBoard;
-
-        public GameOfLife(int size)
+        private int height;
+        private int width;
+        public GameOfLife(int height, int width)
         {
             Random rand = new Random();
-            boardSize = size;
-            gameBoard = new Cell[size, size];
-            for (int y = 0; y < size; y++)
+            this.height = height;
+            this.width = width;
+            gameBoard = new Cell[height, width];
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < size; x++)
+                for (int x = 0; x < width; x++)
                 {
                     double check = rand.NextDouble();
                     gameBoard[y, x] = new Cell(check >= 0.5);
@@ -26,24 +27,25 @@ namespace ConwaysGameOfLife
             }
         }
 
-        public GameOfLife(int size, string[] liveCells)
+        public GameOfLife(int height, int width, string[] liveCells)
         {
-            BoardSetup(size, liveCells);
+            BoardSetup(height, width, liveCells);
         }
 
-        public GameOfLife(int size, string design)
+        public GameOfLife(int height, int width, string design)
         {
             string[] liveCells = Pattern(design);
-            BoardSetup(size, liveCells);
+            BoardSetup(height, width, liveCells);
         }
 
-        private void BoardSetup(int size, string[] liveCells)
+        private void BoardSetup(int height, int width, string[] liveCells)
         {
-            boardSize = size;
-            gameBoard = new Cell[size, size];
-            for (int y = 0; y < size; y++)
+            this.height = height;
+            this.width = width;
+            gameBoard = new Cell[height, width];
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < size; x++)
+                for (int x = 0; x < width; x++)
                 {
                     string index = y.ToString() + "," + x.ToString();
                     gameBoard[y, x] = new Cell(liveCells.Contains(index));
@@ -158,10 +160,10 @@ namespace ConwaysGameOfLife
         public List<List<bool>> ToList()
         {
             List<List<bool>> cellList = new List<List<bool>> { };
-            for (int y = 0; y < boardSize; y++)
+            for (int y = 0; y < height; y++)
             {
                 List<bool> row = new List<bool> { };
-                for (int x = 0; x < boardSize; x++)
+                for (int x = 0; x < width; x++)
                 {
                     row.Add(gameBoard[y, x].Living);
                 }
@@ -172,13 +174,13 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
-            for (int y = 0; y < boardSize; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < boardSize; x++)
+                for (int x = 0; x < width; x++)
                 {
                     if (gameBoard[y,x].Living)
                     {
-                        TellLiving(x, y);
+                        TellLiving(y, x);
                     }
                 }
             }
@@ -187,9 +189,9 @@ namespace ConwaysGameOfLife
 
         public void Update()
         {
-            for (int y = 0; y < boardSize; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < boardSize; x++)
+                for (int x = 0; x < width; x++)
                 {
                     Cell testCell = gameBoard[y, x];
                     if (testCell.Living)
@@ -211,10 +213,10 @@ namespace ConwaysGameOfLife
             int x_p = x + 1;
             int y_m = y - 1;
             int x_m = x - 1;
-            if (y_p > boardSize - 1) y_p = 0;
-            if (x_p > boardSize - 1) x_p = 0;
-            if (y_m < 0) y_m = boardSize - 1;
-            if (x_m < 0) x_m = boardSize - 1;
+            if (y_p > height - 1) y_p = 0;
+            if (x_p > width - 1) x_p = 0;
+            if (y_m < 0) y_m = height - 1;
+            if (x_m < 0) x_m = width - 1;
             gameBoard[y_p, x_p].LiveNeighbors++;
             gameBoard[y_m, x_m].LiveNeighbors++;
             gameBoard[y_p, x_m].LiveNeighbors++;
