@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ConwaysGameOfLife
@@ -11,8 +12,11 @@ namespace ConwaysGameOfLife
         private Cell[,] gameBoard;
         private int height;
         private int width;
-        public GameOfLife(int height, int width)
+        private int[] stayAlive;
+        private int[] born;
+        public GameOfLife(int height, int width, string rules)
         {
+            RulesParser(rules);
             Random rand = new Random();
             this.height = height;
             this.width = width;
@@ -27,19 +31,20 @@ namespace ConwaysGameOfLife
             }
         }
 
-        public GameOfLife(int height, int width, string[] liveCells)
+        public GameOfLife(int height, int width, string rules, string[] liveCells)
         {
-            BoardSetup(height, width, liveCells);
+            BoardSetup(height, width, rules, liveCells);
         }
 
-        public GameOfLife(int height, int width, string design)
+        public GameOfLife(int height, int width, string rules, string design)
         {
             string[] liveCells = Pattern(design);
-            BoardSetup(height, width, liveCells);
+            BoardSetup(height, width, rules, liveCells);
         }
 
-        private void BoardSetup(int height, int width, string[] liveCells)
+        private void BoardSetup(int height, int width, string rules, string[] liveCells)
         {
+            RulesParser(rules);
             this.height = height;
             this.width = width;
             gameBoard = new Cell[height, width];
@@ -51,6 +56,91 @@ namespace ConwaysGameOfLife
                     gameBoard[y, x] = new Cell(liveCells.Contains(index));
                 }
             }
+        }
+
+        private void RulesParser(string rules)
+        {
+            string[] splitAt = new string[] { "B", "/S" };
+            string[] splitRules = rules.Split(splitAt, StringSplitOptions.None);
+            char[] bornRules = splitRules[1].ToCharArray();
+            char[] stayRules = splitRules[2].ToCharArray();
+            int[] bornInts = new int[bornRules.Length];
+            int[] stayInts = new int[stayRules.Length];
+            for (int i = 0; i < bornRules.Length; i++)
+            {
+                bornInts[i] = int.Parse(bornRules[i].ToString());
+            }
+            for (int i = 0; i < stayRules.Length; i++)
+            {
+                stayInts[i] = int.Parse(stayRules[i].ToString());
+            }
+            stayAlive = stayInts;
+            born = bornInts;
+        }
+
+        public List<List<bool>> ToList()
+        {
+            List<List<bool>> cellList = new List<List<bool>> { };
+            for (int y = 0; y < height; y++)
+            {
+                List<bool> row = new List<bool> { };
+                for (int x = 0; x < width; x++)
+                {
+                    row.Add(gameBoard[y, x].Living);
+                }
+                cellList.Add(row);
+            }
+            return cellList;
+        }
+
+        public void Tick()
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    if (gameBoard[y,x].Living)
+                    {
+                        TellLiving(y, x);
+                    }
+                }
+            }
+            Update();
+        }
+
+        public void Update()
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    Cell testCell = gameBoard[y, x];
+                    if (testCell.Living && stayAlive.Contains(testCell.LiveNeighbors)) { }
+                    else testCell.Living = false;
+                    if (!testCell.Living && born.Contains(testCell.LiveNeighbors)) testCell.Living = true; 
+                    testCell.LiveNeighbors = 0;
+                }
+            }
+        }
+
+        private void TellLiving(int y, int x)
+        {
+            int y_p = y + 1;
+            int x_p = x + 1;
+            int y_m = y - 1;
+            int x_m = x - 1;
+            if (y_p > height - 1) y_p = 0;
+            if (x_p > width - 1) x_p = 0;
+            if (y_m < 0) y_m = height - 1;
+            if (x_m < 0) x_m = width - 1;
+            gameBoard[y_p, x_p].LiveNeighbors++;
+            gameBoard[y_m, x_m].LiveNeighbors++;
+            gameBoard[y_p, x_m].LiveNeighbors++;
+            gameBoard[y_m, x_p].LiveNeighbors++;
+            gameBoard[y_p, x].LiveNeighbors++;
+            gameBoard[y_m, x].LiveNeighbors++;
+            gameBoard[y, x_p].LiveNeighbors++;
+            gameBoard[y, x_m].LiveNeighbors++;
         }
 
         public string[] Pattern(string design)
@@ -155,76 +245,6 @@ namespace ConwaysGameOfLife
                 };
             }
             return new string[] { };
-        }
-
-        public List<List<bool>> ToList()
-        {
-            List<List<bool>> cellList = new List<List<bool>> { };
-            for (int y = 0; y < height; y++)
-            {
-                List<bool> row = new List<bool> { };
-                for (int x = 0; x < width; x++)
-                {
-                    row.Add(gameBoard[y, x].Living);
-                }
-                cellList.Add(row);
-            }
-            return cellList;
-        }
-
-        public void Tick()
-        {
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    if (gameBoard[y,x].Living)
-                    {
-                        TellLiving(y, x);
-                    }
-                }
-            }
-            Update();
-        }
-
-        public void Update()
-        {
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    Cell testCell = gameBoard[y, x];
-                    if (testCell.Living)
-                    {
-                        if (testCell.LiveNeighbors < 2 || testCell.LiveNeighbors > 3) testCell.Living = false;
-                    }
-                    else
-                    {
-                        if (testCell.LiveNeighbors == 3) testCell.Living = true;
-                    }
-                    testCell.LiveNeighbors = 0;
-                }
-            }
-        }
-
-        private void TellLiving(int y, int x)
-        {
-            int y_p = y + 1;
-            int x_p = x + 1;
-            int y_m = y - 1;
-            int x_m = x - 1;
-            if (y_p > height - 1) y_p = 0;
-            if (x_p > width - 1) x_p = 0;
-            if (y_m < 0) y_m = height - 1;
-            if (x_m < 0) x_m = width - 1;
-            gameBoard[y_p, x_p].LiveNeighbors++;
-            gameBoard[y_m, x_m].LiveNeighbors++;
-            gameBoard[y_p, x_m].LiveNeighbors++;
-            gameBoard[y_m, x_p].LiveNeighbors++;
-            gameBoard[y_p, x].LiveNeighbors++;
-            gameBoard[y_m, x].LiveNeighbors++;
-            gameBoard[y, x_p].LiveNeighbors++;
-            gameBoard[y, x_m].LiveNeighbors++;
         }
     }
 }
