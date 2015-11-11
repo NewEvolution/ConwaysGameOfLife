@@ -207,22 +207,22 @@ namespace ConwaysGameOfLife
 
         private void tellLiving(int y, int x)
         {
-            int x_p = x + 1;
             int y_p = y + 1;
-            int x_m = x - 1;
+            int x_p = x + 1;
             int y_m = y - 1;
-            if (x_p > boardSize - 1) x_p = 0;
+            int x_m = x - 1;
             if (y_p > boardSize - 1) y_p = 0;
-            if (x_m < 0) x_m = boardSize - 1;
+            if (x_p > boardSize - 1) x_p = 0;
             if (y_m < 0) y_m = boardSize - 1;
-            gameBoard[x_p, y_p].LiveNeighbors++;
-            gameBoard[x_m, y_m].LiveNeighbors++;
-            gameBoard[x_p, y_m].LiveNeighbors++;
-            gameBoard[x_m, y_p].LiveNeighbors++;
-            gameBoard[x_p, y].LiveNeighbors++;
-            gameBoard[x_m, y].LiveNeighbors++;
-            gameBoard[x, y_p].LiveNeighbors++;
-            gameBoard[x, y_m].LiveNeighbors++;
+            if (x_m < 0) x_m = boardSize - 1;
+            gameBoard[y_p, x_p].LiveNeighbors++;
+            gameBoard[y_m, x_m].LiveNeighbors++;
+            gameBoard[y_p, x_m].LiveNeighbors++;
+            gameBoard[y_m, x_p].LiveNeighbors++;
+            gameBoard[y_p, x].LiveNeighbors++;
+            gameBoard[y_m, x].LiveNeighbors++;
+            gameBoard[y, x_p].LiveNeighbors++;
+            gameBoard[y, x_m].LiveNeighbors++;
         }
     }
 }
