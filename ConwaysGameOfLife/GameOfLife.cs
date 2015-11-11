@@ -178,14 +178,14 @@ namespace ConwaysGameOfLife
                 {
                     if (gameBoard[y,x].Living)
                     {
-                        tellLiving(x, y);
+                        TellLiving(x, y);
                     }
                 }
             }
-            update();
+            Update();
         }
 
-        public void update()
+        public void Update()
         {
             for (int y = 0; y < boardSize; y++)
             {
@@ -205,7 +205,7 @@ namespace ConwaysGameOfLife
             }
         }
 
-        private void tellLiving(int y, int x)
+        private void TellLiving(int y, int x)
         {
             int y_p = y + 1;
             int x_p = x + 1;
