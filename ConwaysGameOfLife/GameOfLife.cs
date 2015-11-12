@@ -12,8 +12,8 @@ namespace ConwaysGameOfLife
         private Cell[,] gameBoard;
         private int height;
         private int width;
-        private int[] stayAlive;
         private int[] born;
+        private int[] stayAlive;
         private List<Cell> activeCells = new List<Cell> { };
 
         // Constructor with just height, width & algorithm rules creates random board
@@ -70,20 +70,20 @@ namespace ConwaysGameOfLife
         private void RulesParser(string rules)
         {
             string[] splitRules = rules.Split('/');
-            char[] bornRules = splitRules[0].ToCharArray();
-            char[] stayRules = splitRules[1].ToCharArray();
-            int[] bornInts = new int[bornRules.Length];
+            char[] stayRules = splitRules[0].ToCharArray();
+            char[] bornRules = splitRules[1].ToCharArray();
             int[] stayInts = new int[stayRules.Length];
-            for (int i = 0; i < bornRules.Length; i++)
-            {
-                bornInts[i] = int.Parse(bornRules[i].ToString());
-            }
+            int[] bornInts = new int[bornRules.Length];
             for (int i = 0; i < stayRules.Length; i++)
             {
                 stayInts[i] = int.Parse(stayRules[i].ToString());
             }
-            stayAlive = stayInts;
+            for (int i = 0; i < bornRules.Length; i++)
+            {
+                bornInts[i] = int.Parse(bornRules[i].ToString());
+            }
             born = bornInts;
+            stayAlive = stayInts;
         }
 
         public List<List<bool>> ToList()
