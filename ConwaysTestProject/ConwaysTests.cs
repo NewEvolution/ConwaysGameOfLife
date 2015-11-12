@@ -61,6 +61,8 @@ namespace ConwaysTestProject
             Assert.IsFalse(game.ToList()[0][1]);
             game.Tick();
             Assert.IsTrue(game.ToList()[0][1]);
+            game.Tick();
+            Assert.IsFalse(game.ToList()[0][1]);
         }
 
         [TestMethod]

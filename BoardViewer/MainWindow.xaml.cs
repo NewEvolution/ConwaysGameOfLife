@@ -16,7 +16,7 @@ namespace BoardViewer
 
         public MainWindow()
         {
-            currentBoard = new GameOfLife(72, 71, "/234", "big pentadecathlon");
+            currentBoard = new GameOfLife(25, 25, "23/3", "pentadecathlon");
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();

@@ -9,6 +9,7 @@ namespace ConwaysGameOfLife
 {
     public class GameOfLife : Board
     {
+        private List<List<bool>> cellList = new List<List<bool>> { };
         private Cell[,] gameBoard;
         private int height;
         private int width;
@@ -26,13 +27,16 @@ namespace ConwaysGameOfLife
             gameBoard = new Cell[height, width];
             for (int y = 0; y < height; y++)
             {
+                List<bool> row = new List<bool> { };
                 for (int x = 0; x < width; x++)
                 {
                     double check = rand.NextDouble();
                     bool cellAlive = check >= 0.5;
                     gameBoard[y, x] = new Cell(cellAlive) { Y = y, X = x };
                     if (cellAlive) activeCells.Add(gameBoard[y, x]);
+                    row.Add(cellAlive);
                 }
+                cellList.Add(row);
             }
         }
 
@@ -57,13 +61,16 @@ namespace ConwaysGameOfLife
             gameBoard = new Cell[height, width];
             for (int y = 0; y < height; y++)
             {
+                List<bool> row = new List<bool> { };
                 for (int x = 0; x < width; x++)
                 {
                     string index = y.ToString() + "," + x.ToString();
                     bool cellAlive = liveCells.Contains(index);
                     gameBoard[y, x] = new Cell(cellAlive) { Y = y, X = x };
                     if (cellAlive) activeCells.Add(gameBoard[y, x]);
+                    row.Add(cellAlive);
                 }
+                cellList.Add(row);
             }
         }
 
@@ -88,17 +95,7 @@ namespace ConwaysGameOfLife
 
         public List<List<bool>> ToList()
         {
-            List<List<bool>> cellList = new List<List<bool>> { };
-            for (int y = 0; y < height; y++)
-            {
-                List<bool> row = new List<bool> { };
-                for (int x = 0; x < width; x++)
-                {
-                    row.Add(gameBoard[y, x].Living);
-                }
-                cellList.Add(row);
-            }
-            return cellList;
+            return new List<List<bool>>(cellList);
         }
 
         public void Tick()
@@ -121,11 +118,13 @@ namespace ConwaysGameOfLife
                 else
                 {
                     testCell.Living = false;
+                    cellList[testCell.Y][testCell.X] = false;
                     if (!toRemove.Contains(testCell)) toRemove.Add(testCell);
                 }
                 if (!testCell.Living && born.Contains(testCell.LiveNeighbors))
                 {
                     testCell.Living = true;
+                    cellList[testCell.Y][testCell.X] = true;
                     if (!toAdd.Contains(testCell)) toAdd.Add(testCell);
                 }
                 testCell.LiveNeighbors = 0;
@@ -184,7 +183,7 @@ namespace ConwaysGameOfLife
                     "14,10"
                 };
             }
-            if (check == "big pentadecathlon")
+            if (check == "71 pentadecathlon")
             {
                 return new string[]
                 {
@@ -198,6 +197,32 @@ namespace ConwaysGameOfLife
                     "38,34", "38,36",
                     "39,35",
                     "40,35"
+                };
+            }
+            if (check == "double pentadecathlon")
+            {
+                return new string[]
+                {
+                    "26,35", "26,36",
+                    "27,35", "27,36",
+                    "28,35", "28,36",
+                    "29,35", "29,36",
+                    "30,33", "30,34", "30,37", "30,38",
+                    "31,33", "31,34", "31,37", "31,38",
+                    "32,35", "32,36",
+                    "33,35", "33,36",
+                    "34,35", "34,36",
+                    "35,35", "35,36",
+                    "36,35", "36,36",
+                    "37,35", "37,36",
+                    "38,35", "38,36",
+                    "39,35", "39,36",
+                    "40,33", "40,34", "40,37", "40,38",
+                    "41,33", "41,34", "41,37", "41,38",
+                    "42,35", "42,36",
+                    "43,35", "43,36",
+                    "44,35", "44,36",
+                    "45,35", "45,36"
                 };
             }
             if (check == "glider")
