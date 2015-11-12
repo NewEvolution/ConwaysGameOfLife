@@ -69,10 +69,9 @@ namespace ConwaysGameOfLife
 
         private void RulesParser(string rules)
         {
-            string[] splitAt = new string[] { "B", "/S" };
-            string[] splitRules = rules.Split(splitAt, StringSplitOptions.None);
-            char[] bornRules = splitRules[1].ToCharArray();
-            char[] stayRules = splitRules[2].ToCharArray();
+            string[] splitRules = rules.Split('/');
+            char[] bornRules = splitRules[0].ToCharArray();
+            char[] stayRules = splitRules[1].ToCharArray();
             int[] bornInts = new int[bornRules.Length];
             int[] stayInts = new int[stayRules.Length];
             for (int i = 0; i < bornRules.Length; i++)
@@ -183,6 +182,22 @@ namespace ConwaysGameOfLife
                     "12,9", "12,11",
                     "13,10",
                     "14,10"
+                };
+            }
+            if (check == "big pentadecathlon")
+            {
+                return new string[]
+                {
+                    "31,35",
+                    "32,35",
+                    "33,34", "33,36",
+                    "34,35",
+                    "35,35",
+                    "36,35",
+                    "37,35",
+                    "38,34", "38,36",
+                    "39,35",
+                    "40,35"
                 };
             }
             if (check == "glider")

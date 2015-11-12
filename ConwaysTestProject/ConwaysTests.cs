@@ -10,28 +10,28 @@ namespace ConwaysTestProject
         [TestMethod]
         public void GameConstructor()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23");
+            GameOfLife game = new GameOfLife(25, 25, "3/23");
             Assert.IsNotNull(game);
         }
 
         [TestMethod]
         public void GameConstructorWithCellArray()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", new string[] { "0,0", "1,0" });
+            GameOfLife game = new GameOfLife(25, 25, "3/23", new string[] { "0,0", "1,0" });
             Assert.IsNotNull(game);
         }
 
         [TestMethod]
         public void GameConstructorWithPattern()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", "none");
+            GameOfLife game = new GameOfLife(25, 25, "3/23", "none");
             Assert.IsNotNull(game);
         }
 
         [TestMethod]
         public void InitializedPatternlessGameBoardIsFullOfDeadCells()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", "none");
+            GameOfLife game = new GameOfLife(25, 25, "3/23", "none");
             bool actualCellValue = game.ToList()[5][4];
             Assert.IsFalse(actualCellValue);
         }
@@ -39,7 +39,7 @@ namespace ConwaysTestProject
         [TestMethod]
         public void OverloadInitializeHasLiveAndDeadCells()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", new string[] { "0,0", "1,0" });
+            GameOfLife game = new GameOfLife(25, 25, "3/23", new string[] { "0,0", "1,0" });
             Assert.IsTrue(game.ToList()[0][0]);
             Assert.IsTrue(game.ToList()[1][0]);
             Assert.IsFalse(game.ToList()[5][5]);
@@ -48,7 +48,7 @@ namespace ConwaysTestProject
         [TestMethod]
         public void OneCellDies()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", new string[] { "0,0" });
+            GameOfLife game = new GameOfLife(25, 25, "3/23", new string[] { "0,0" });
             Assert.IsTrue(game.ToList()[0][0]);
             game.Tick();
             Assert.IsFalse(game.ToList()[0][0]);
@@ -57,7 +57,7 @@ namespace ConwaysTestProject
         [TestMethod]
         public void ThreeLiveCellsFlipsDeadCell()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", new string[] { "0,0", "0,2", "1,1" });
+            GameOfLife game = new GameOfLife(25, 25, "3/23", new string[] { "0,0", "0,2", "1,1" });
             Assert.IsFalse(game.ToList()[0][1]);
             game.Tick();
             Assert.IsTrue(game.ToList()[0][1]);
@@ -66,7 +66,7 @@ namespace ConwaysTestProject
         [TestMethod]
         public void BlockStillLifeAllCellsLive()
         {
-            GameOfLife game = new GameOfLife(25, 25, "B3/S23", new string[] { "0,0", "0,1", "1,0", "1,1" });
+            GameOfLife game = new GameOfLife(25, 25, "3/23", new string[] { "0,0", "0,1", "1,0", "1,1" });
             game.Tick();
             Assert.IsTrue(game.ToList()[0][0]);
             Assert.IsTrue(game.ToList()[0][1]);
