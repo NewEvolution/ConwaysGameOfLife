@@ -14,6 +14,7 @@ namespace ConwaysGameOfLife
         private int width;
         private int[] stayAlive;
         private int[] born;
+        private List<Cell> activeCells = new List<Cell> { };
         public GameOfLife(int height, int width, string rules)
         {
             RulesParser(rules);
@@ -99,8 +100,12 @@ namespace ConwaysGameOfLife
             {
                 for (int x = 0; x < width; x++)
                 {
-                    if (gameBoard[y,x].Living)
+                    if (gameBoard[y, x].Living)
                     {
+                        if (!activeCells.Contains(gameBoard[y, x]))
+                        {
+                            activeCells.Add(gameBoard[y, x]);
+                        }
                         TellLiving(y, x);
                     }
                 }
@@ -110,17 +115,14 @@ namespace ConwaysGameOfLife
 
         public void Update()
         {
-            for (int y = 0; y < height; y++)
+            foreach (Cell testCell in activeCells)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    Cell testCell = gameBoard[y, x];
-                    if (testCell.Living && stayAlive.Contains(testCell.LiveNeighbors)) { }
-                    else testCell.Living = false;
-                    if (!testCell.Living && born.Contains(testCell.LiveNeighbors)) testCell.Living = true; 
-                    testCell.LiveNeighbors = 0;
-                }
+                if (testCell.Living && stayAlive.Contains(testCell.LiveNeighbors)) { }
+                else testCell.Living = false;
+                if (!testCell.Living && born.Contains(testCell.LiveNeighbors)) testCell.Living = true;
+                testCell.LiveNeighbors = 0;
             }
+            activeCells = new List<Cell> { };
         }
 
         private void TellLiving(int y, int x)
@@ -133,14 +135,22 @@ namespace ConwaysGameOfLife
             if (x_p > width - 1) x_p = 0;
             if (y_m < 0) y_m = height - 1;
             if (x_m < 0) x_m = width - 1;
-            gameBoard[y_p, x_p].LiveNeighbors++;
-            gameBoard[y_m, x_m].LiveNeighbors++;
-            gameBoard[y_p, x_m].LiveNeighbors++;
-            gameBoard[y_m, x_p].LiveNeighbors++;
-            gameBoard[y_p, x].LiveNeighbors++;
-            gameBoard[y_m, x].LiveNeighbors++;
-            gameBoard[y, x_p].LiveNeighbors++;
-            gameBoard[y, x_m].LiveNeighbors++;
+            int[][] cases = new int[][]
+            { 
+                new int[] {y_p, x_p }, new int[] { y_m, x_m },
+                new int[] { y_p, x_m }, new int[] { y_m, x_p },
+                new int[] { y_p, x }, new int[] { y_m, x },
+                new int[] { y, x_p }, new int[] { y, x_m }
+            };
+            foreach (int[] pair in cases)
+            {
+                Cell targetCell = gameBoard[pair[0], pair[1]];
+                targetCell.LiveNeighbors++;
+                if (!activeCells.Contains(targetCell))
+                {
+                    activeCells.Add(targetCell);
+                }
+            }
         }
 
         public string[] Pattern(string design)
@@ -242,6 +252,14 @@ namespace ConwaysGameOfLife
                     "24,21", "24,22", "24,23",
                     "24,30", "24,31", "24,32", "24,33", "24,34", "24,35", "24,36",
                     "24,38", "24,39", "24,40", "24,41", "24,42",
+                };
+            }
+            if (check == "seeds expander")
+            {
+                return new string[] 
+                {
+                    "31,35", "32,35", "33,35", "34,35",
+                    "36,35", "37,35", "38,35", "39,35"
                 };
             }
             return new string[] { };

@@ -16,7 +16,7 @@ namespace BoardViewer
 
         public MainWindow()
         {
-            currentBoard = new GameOfLife(25, 25, "B34/S34", "pulsar");
+            currentBoard = new GameOfLife(71, 71, "B2/S", "seeds expander");
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();
