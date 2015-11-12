@@ -15,6 +15,8 @@ namespace ConwaysGameOfLife
         private int[] stayAlive;
         private int[] born;
         private List<Cell> activeCells = new List<Cell> { };
+
+        // Constructor with just height, width & algorithm rules creates random board
         public GameOfLife(int height, int width, string rules)
         {
             RulesParser(rules);
@@ -27,16 +29,20 @@ namespace ConwaysGameOfLife
                 for (int x = 0; x < width; x++)
                 {
                     double check = rand.NextDouble();
-                    gameBoard[y, x] = new Cell(check >= 0.5);
+                    bool cellAlive = check >= 0.5;
+                    gameBoard[y, x] = new Cell(cellAlive) { Y = y, X = x };
+                    if (cellAlive) activeCells.Add(gameBoard[y, x]);
                 }
             }
         }
 
+        // Constructor with height, width & an array of CSV strings creates board with those coords live
         public GameOfLife(int height, int width, string rules, string[] liveCells)
         {
             BoardSetup(height, width, rules, liveCells);
         }
 
+        // Constructor with height, width & string value creates board with that design, or empty if design does not exist
         public GameOfLife(int height, int width, string rules, string design)
         {
             string[] liveCells = Pattern(design);
@@ -54,7 +60,9 @@ namespace ConwaysGameOfLife
                 for (int x = 0; x < width; x++)
                 {
                     string index = y.ToString() + "," + x.ToString();
-                    gameBoard[y, x] = new Cell(liveCells.Contains(index));
+                    bool cellAlive = liveCells.Contains(index);
+                    gameBoard[y, x] = new Cell(cellAlive) { Y = y, X = x };
+                    if (cellAlive) activeCells.Add(gameBoard[y, x]);
                 }
             }
         }
@@ -96,33 +104,41 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
-            for (int y = 0; y < height; y++)
+            List<Cell> liveCells = new List<Cell>(activeCells);
+            foreach (Cell cell in liveCells)
             {
-                for (int x = 0; x < width; x++)
-                {
-                    if (gameBoard[y, x].Living)
-                    {
-                        if (!activeCells.Contains(gameBoard[y, x]))
-                        {
-                            activeCells.Add(gameBoard[y, x]);
-                        }
-                        TellLiving(y, x);
-                    }
-                }
+                TellLiving(cell.Y, cell.X);
             }
             Update();
         }
 
         public void Update()
         {
+            List<Cell> toAdd = new List<Cell> { };
+            List<Cell> toRemove = new List<Cell> { };
             foreach (Cell testCell in activeCells)
             {
                 if (testCell.Living && stayAlive.Contains(testCell.LiveNeighbors)) { }
-                else testCell.Living = false;
-                if (!testCell.Living && born.Contains(testCell.LiveNeighbors)) testCell.Living = true;
+                else
+                {
+                    testCell.Living = false;
+                    if (!toRemove.Contains(testCell)) toRemove.Add(testCell);
+                }
+                if (!testCell.Living && born.Contains(testCell.LiveNeighbors))
+                {
+                    testCell.Living = true;
+                    if (!toAdd.Contains(testCell)) toAdd.Add(testCell);
+                }
                 testCell.LiveNeighbors = 0;
             }
-            activeCells = new List<Cell> { };
+            foreach (Cell killed in toRemove)
+            {
+                activeCells.Remove(killed);
+            }
+            foreach (Cell born in toAdd)
+            {
+                activeCells.Add(born);
+            }
         }
 
         private void TellLiving(int y, int x)
@@ -146,10 +162,7 @@ namespace ConwaysGameOfLife
             {
                 Cell targetCell = gameBoard[pair[0], pair[1]];
                 targetCell.LiveNeighbors++;
-                if (!activeCells.Contains(targetCell))
-                {
-                    activeCells.Add(targetCell);
-                }
+                if (!activeCells.Contains(targetCell)) activeCells.Add(targetCell);
             }
         }
 
