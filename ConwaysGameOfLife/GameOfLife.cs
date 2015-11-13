@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -9,7 +10,7 @@ namespace ConwaysGameOfLife
 {
     public class GameOfLife : Board
     {
-        private List<List<bool>> cellList = new List<List<bool>> { };
+        private ObservableCollection<ObservableCollection<bool>> cellList = new ObservableCollection<ObservableCollection<bool>> { };
         private Cell[,] gameBoard;
         private int height;
         private int width;
@@ -27,7 +28,7 @@ namespace ConwaysGameOfLife
             gameBoard = new Cell[height, width];
             for (int y = 0; y < height; y++)
             {
-                List<bool> row = new List<bool> { };
+                ObservableCollection<bool> row = new ObservableCollection<bool> { };
                 for (int x = 0; x < width; x++)
                 {
                     double check = rand.NextDouble();
@@ -61,7 +62,7 @@ namespace ConwaysGameOfLife
             gameBoard = new Cell[height, width];
             for (int y = 0; y < height; y++)
             {
-                List<bool> row = new List<bool> { };
+                ObservableCollection<bool> row = new ObservableCollection<bool> { };
                 for (int x = 0; x < width; x++)
                 {
                     string index = y.ToString() + "," + x.ToString();
@@ -93,9 +94,9 @@ namespace ConwaysGameOfLife
             stayAlive = stayInts;
         }
 
-        public List<List<bool>> ToList()
+        public ObservableCollection<ObservableCollection<bool>> ToList()
         {
-            return new List<List<bool>>(cellList);
+            return cellList;
         }
 
         public void Tick()

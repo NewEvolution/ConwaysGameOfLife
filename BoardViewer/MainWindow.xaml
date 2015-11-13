@@ -17,6 +17,22 @@
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding}" Value="True">
                                     <Setter Property="Fill" Value="Aquamarine" />
+                                    <!--<DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)"
+                                                                To="Aquamarine" Duration="0:0:0.1" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)"
+                                                                From="Aquamarine"  To="Black" Duration="0:0:0.5" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>-->
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
