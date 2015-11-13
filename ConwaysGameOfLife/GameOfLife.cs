@@ -100,7 +100,21 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
-            List<Cell> liveCells = new List<Cell>(activeCells);
+            List<Cell> liveCells = new List<Cell> { };
+            if (stayAlive.Contains(0) || born.Contains(0))
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        liveCells.Add(gameBoard[y, x]);
+                    }
+                }
+            }
+            else
+            {
+                liveCells = new List<Cell>(activeCells);
+            }
             foreach (Cell cell in liveCells)
             {
                 TellLiving(cell.Y, cell.X);
@@ -313,6 +327,15 @@ namespace ConwaysGameOfLife
                 {
                     "31,35", "32,35", "33,35", "34,35",
                     "36,35", "37,35", "38,35", "39,35"
+                };
+            }
+            if (check == "center cross")
+            {
+                return new string[]
+                {
+                    "34,35",
+                    "35,34", "35,36",
+                    "36,35"
                 };
             }
             return new string[] { };
