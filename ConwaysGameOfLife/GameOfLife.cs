@@ -100,21 +100,7 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
-            List<Cell> liveCells = new List<Cell> { };
-            if (stayAlive.Contains(0) || born.Contains(0))
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        liveCells.Add(gameBoard[y, x]);
-                    }
-                }
-            }
-            else
-            {
-                liveCells = new List<Cell>(activeCells);
-            }
+            List<Cell> liveCells = new List<Cell>(activeCells);
             foreach (Cell cell in liveCells)
             {
                 TellLiving(cell.Y, cell.X);
@@ -124,12 +110,22 @@ namespace ConwaysGameOfLife
 
         public void Update()
         {
+            if ((stayAlive.Contains(0) || born.Contains(0)) && activeCells.Count != gameBoard.Length)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        if (!activeCells.Contains(gameBoard[y, x])) activeCells.Add(gameBoard[y, x]);
+                    }
+                }
+            }
             List<Cell> toAdd = new List<Cell> { };
             List<Cell> toRemove = new List<Cell> { };
             foreach (Cell testCell in activeCells)
             {
                 if (testCell.Living && stayAlive.Contains(testCell.LiveNeighbors)) { }
-                else
+                else if (testCell.Living)
                 {
                     testCell.Living = false;
                     cellList[testCell.Y][testCell.X] = false;
@@ -141,6 +137,7 @@ namespace ConwaysGameOfLife
                     cellList[testCell.Y][testCell.X] = true;
                     if (!toAdd.Contains(testCell)) toAdd.Add(testCell);
                 }
+                if (!testCell.Living && !toRemove.Contains(testCell)) toRemove.Add(testCell); 
                 testCell.LiveNeighbors = 0;
             }
             foreach (Cell killed in toRemove)
@@ -149,7 +146,7 @@ namespace ConwaysGameOfLife
             }
             foreach (Cell born in toAdd)
             {
-                activeCells.Add(born);
+                if(!activeCells.Contains(born)) activeCells.Add(born);
             }
         }
 

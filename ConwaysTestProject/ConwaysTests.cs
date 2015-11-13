@@ -75,5 +75,25 @@ namespace ConwaysTestProject
             Assert.IsTrue(game.ToList()[1][0]);
             Assert.IsTrue(game.ToList()[1][1]);
         }
+
+        [TestMethod]
+        public void NoSurvivalBornZeroFlipsWholeBoard()
+        {
+            GameOfLife game = new GameOfLife(5, 5, "/0", "none");
+            Assert.IsFalse(game.ToList()[1][3]);
+            game.Tick();
+            Assert.IsTrue(game.ToList()[3][2]);
+        }
+
+        [TestMethod]
+        public void NoSurvivalKillsWholeBoard()
+        {
+            GameOfLife game = new GameOfLife(5, 5, "/0", "none");
+            Assert.IsFalse(game.ToList()[1][3]);
+            game.Tick();
+            Assert.IsTrue(game.ToList()[3][2]);
+            game.Tick();
+            Assert.IsFalse(game.ToList()[1][3]);
+        }
     }
 }
