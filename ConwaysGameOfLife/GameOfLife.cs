@@ -311,7 +311,7 @@ namespace ConwaysGameOfLife
                     "36,35", "37,35", "38,35", "39,35"
                 };
             }
-            if (check == "center cross")
+            if (check == "center star")
             {
                 return new string[]
                 {
