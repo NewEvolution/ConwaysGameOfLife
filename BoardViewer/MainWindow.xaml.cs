@@ -3,6 +3,7 @@ using ConwaysGameOfLife;
 using System.Windows.Threading;
 using System;
 using Xceed.Wpf.Toolkit;
+using System.Windows.Media.Animation;
 
 namespace BoardViewer
 {

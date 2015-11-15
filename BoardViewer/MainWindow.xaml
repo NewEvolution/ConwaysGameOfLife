@@ -18,10 +18,10 @@
                                 <DataTrigger Binding="{Binding}" Value="True">
                                     <Setter Property="Fill" Value="Aquamarine" />
                                     <!--<DataTrigger.EnterActions>
-                                        <BeginStoryboard>
+                                        <BeginStoryboard Name="FadeIn">
                                             <Storyboard>
                                                 <ColorAnimation Storyboard.TargetProperty="(Rectangle.Fill).(SolidColorBrush.Color)"
-                                                                To="Aquamarine" Duration="0:0:0.1" />
+                                                                From="Black"  To="Aquamarine" Duration="0:0:0.1" />
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>
