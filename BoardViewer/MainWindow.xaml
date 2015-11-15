@@ -64,7 +64,7 @@
             <Button x:Name="RunButton" Content="Run" Margin="5,0,5,0" Click="Run_Button_Click" />
             <Button x:Name="StopButton" Content="Stop" Margin="0" Click="Stop_Button_Click" IsEnabled="False" />
             <Label Content="Speed:"/>
-            <xctk:DoubleUpDown x:Name="RunSpeed" Value="0.50" Increment="0.25" Minimum="0.25" ValueChanged="RunSpeed_ValueChanged" IsEnabled="False" />
+            <xctk:DoubleUpDown x:Name="RunSpeed" Value="0.05" Increment="0.05" Minimum="0.05" ValueChanged="RunSpeed_ValueChanged" IsEnabled="False" />
         </StackPanel>
 
         <ItemsControl x:Name="TheListView" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" ItemTemplate="{StaticResource RowTemplate}">
