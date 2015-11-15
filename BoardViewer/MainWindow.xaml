@@ -67,7 +67,7 @@
             <xctk:DoubleUpDown x:Name="RunSpeed" Value="0.50" Increment="0.25" Minimum="0.25" ValueChanged="RunSpeed_ValueChanged" IsEnabled="False" />
         </StackPanel>
 
-        <ItemsControl x:Name="TheListView" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0" ItemTemplate="{StaticResource RowTemplate}">
+        <ItemsControl x:Name="TheListView" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" ItemTemplate="{StaticResource RowTemplate}">
         </ItemsControl>
     </DockPanel>
 </Window>
